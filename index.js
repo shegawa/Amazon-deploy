@@ -1,6 +1,4 @@
 
-
-
 const { onRequest } = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 const express = require("express");
@@ -9,7 +7,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
-console.log('Stripe Key:', process.env.STRIPE_KEY); // Log Stripe Key to check if it's loaded
+console.log('Stripe Key:', process.env.STRIPE_KEY);
 
 const app = express();
 app.use(cors({ origin: true }));
@@ -22,7 +20,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/payment/create", async (req, res) => {
-    const total = Number(req.query.total); // Convert total to number
+    const total = parseInt(req.query.total);
 
     if (isNaN(total) || total <= 0) {
         return res.status(400).json({
@@ -47,11 +45,9 @@ app.post("/payment/create", async (req, res) => {
         });
     }
 });
-
-
 app.listen(5000, (err) => {
     if (err) throw err
     console.log("Amazon Server Runing on Port:5000, http://localhost:5000")
-})
+});
 
 
